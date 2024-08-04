@@ -6,13 +6,15 @@ import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
 import { useState } from "react";
 import MobileNav from "./mobile-nav";
+import ProfileButton from "./profile-button";
 
 interface MainNavProps {
   items?: MainNavItem[];
   children?: React.ReactNode;
+  user: any; // Added user prop
 }
 
-export default function MainNav({ items, children }: MainNavProps) {
+export default function MainNav({ items, children, user }: MainNavProps) {
   const segment = useSelectedLayoutSegment(); //active segment get
   const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);
 
@@ -40,6 +42,7 @@ export default function MainNav({ items, children }: MainNavProps) {
           ))}
         </nav>
       ) : null}
+      <ProfileButton user={user} /> {/* Pass user prop to ProfileButton */}
       <button
         className="md:hidden flex items-center space-x-2"
         onClick={() => setShowMobileMenu(!showMobileMenu)}

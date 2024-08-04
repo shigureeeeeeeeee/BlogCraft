@@ -3,6 +3,7 @@ import DashboardShell from "@/components/dashboard-shell";
 import EmptyPlaceholder from "@/components/empty-placeholer";
 import PostCreateButton from "@/components/post-create-button";
 import PostItem from "@/components/post-item";
+import ProfileButton from "@/components/profile-button"; // Added import for ProfileButton
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
@@ -33,7 +34,10 @@ export default async function DashboardPage() {
   return (
     <DashboardShell>
       <DashboardHeader heading="投稿" text="記事の作成と管理">
-        <PostCreateButton />
+        <div className="flex items-center space-x-2">
+          <ProfileButton user={user} />
+          <PostCreateButton />
+        </div>
       </DashboardHeader>
       <div>
         {posts.length ? (
