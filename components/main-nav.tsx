@@ -21,7 +21,7 @@ export default function MainNav({ items, children, user }: MainNavProps) {
   return (
     <div className="flex gap-6 md:gap-10">
       <Link href="/" className="hidden md:flex items-center space-x-2">
-        <span className="hidden font-bold sm:inline-block">Post Writer</span>
+        <span className="hidden font-bold sm:inline-block">BlogCraft</span>
       </Link>
       {items?.length ? (
         <nav className="hidden gap-6 md:flex">

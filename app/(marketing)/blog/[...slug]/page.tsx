@@ -7,6 +7,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { siteConfig } from "@/config/site";
+import { Comments } from "@/components/comments";
+import CommentForm from "@/components/comment-form";
+import { db } from "@/lib/db";
+import { Comment } from "@/types/comment"; // Comment型をインポート
 
 interface PostPageProps {
   params: {
@@ -67,6 +71,22 @@ export default async function PostPage({ params }: PostPageProps) {
     notFound();
   }
 
+  // コメントを取得し、型を適切に変換する
+  const comments: Comment[] = await db.comment.findMany({
+    where: { postId: post.slug },
+    include: { author: true },
+    orderBy: { createdAt: "desc" },
+  }).then(comments => comments.map(comment => ({
+    id: comment.id,
+    content: comment.content,
+    createdAt: comment.createdAt.toISOString(),
+    author: {
+      name: comment.author.name || "匿名", // nullの場合はデフォルト値を設定
+      email: comment.author.email || "",
+      image: comment.author.image || ""
+    }
+  })));
+
   return (
     <article className="container max-w-3xl py-6 lg:py-10">
       <Link
@@ -100,6 +120,11 @@ export default async function PostPage({ params }: PostPageProps) {
       )}
       <Mdx code={post.body.code} />
       <hr className="mt-12" />
+      <div className="mt-8">
+        <h2 className="text-2xl font-bold mb-4">コメント</h2>
+        <Comments comments={comments} />
+        <CommentForm postId={post.slug} />
+      </div>
       <div className="flex justify-center py-6 lg:py-10">
         <Link
           href={"/blog"}

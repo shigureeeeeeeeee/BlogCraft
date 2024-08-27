@@ -4,10 +4,14 @@ import EmptyPlaceholder from "@/components/empty-placeholer";
 import PostCreateButton from "@/components/post-create-button";
 import PostItem from "@/components/post-item";
 import ProfileButton from "@/components/profile-button"; // Added import for ProfileButton
+import { DashboardNav } from "@/components/dashboard-nav";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { redirect } from "next/navigation";
+import { Eye, FileText, Users } from "lucide-react";
+import { dashboardConfig } from "@/config/dashboard";
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
@@ -31,34 +35,70 @@ export default async function DashboardPage() {
     },
   });
 
+  const totalViews = 1000; // この値は実際のデータから取得する必要があります
+  const totalFollowers = 50; // この値は実際のデータから取得する必要があります
+
   return (
-    <DashboardShell>
-      <DashboardHeader heading="投稿" text="記事の作成と管理">
-        <div className="flex items-center space-x-2">
+    <div className="flex">
+      <DashboardShell className="flex-grow">
+        <DashboardHeader heading="ダッシュボード" text="ブログの概要と統計">
           <ProfileButton user={user} />
-          <PostCreateButton />
+        </DashboardHeader>
+
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">総投稿数</CardTitle>
+              <FileText className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{posts.length}</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">総閲覧数</CardTitle>
+              <Eye className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{totalViews}</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                フォロワー数
+              </CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{totalFollowers}</div>
+            </CardContent>
+          </Card>
         </div>
-      </DashboardHeader>
-      <div>
-        {posts.length ? (
-          <div className="divide-y divide-border rounded-md border">
-            {posts.map((post) => (
-              <PostItem key={post.id} post={post} />
-            ))}
-          </div>
-        ) : (
-          <EmptyPlaceholder>
-            <EmptyPlaceholder.Icon name="post" />
-            <EmptyPlaceholder.Title>
-              記事が投稿されていません。
-            </EmptyPlaceholder.Title>
-            <EmptyPlaceholder.Description>
-              記事を作成してください。
-            </EmptyPlaceholder.Description>
-            <PostCreateButton variant="outline" />
-          </EmptyPlaceholder>
-        )}
-      </div>
-    </DashboardShell>
+
+        <div className="mt-8">
+          <h2 className="text-2xl font-bold mb-4">最近の投稿</h2>
+          {posts.length ? (
+            <div className="divide-y divide-border rounded-md border">
+              {posts.slice(0, 5).map((post) => (
+                <PostItem key={post.id} post={post} />
+              ))}
+            </div>
+          ) : (
+            <EmptyPlaceholder>
+              <EmptyPlaceholder.Icon name="post" />
+              <EmptyPlaceholder.Title>
+                記事が投稿されていません。
+              </EmptyPlaceholder.Title>
+              <EmptyPlaceholder.Description>
+                記事を作成してください。
+              </EmptyPlaceholder.Description>
+              <PostCreateButton variant="outline" />
+            </EmptyPlaceholder>
+          )}
+        </div>
+      </DashboardShell>
+    </div>
   );
 }

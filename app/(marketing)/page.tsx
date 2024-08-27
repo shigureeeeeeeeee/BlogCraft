@@ -1,347 +1,388 @@
-"use client";
+'use client'
 
-import { buttonVariants } from "@/components/ui/button";
-import { siteConfig } from "@/config/site";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import Image from "next/image";
-import dynamic from 'next/dynamic';
+import { useState } from 'react'
+import { motion } from 'framer-motion'
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+import { PenSquare, Eye, Share2, BarChart3, ChevronRight } from "lucide-react"
+import Link from "next/link"
+import { useRouter } from 'next/navigation'
 
-const MotionDiv = dynamic(() => import('framer-motion').then((mod) => mod.motion.div), { ssr: false });
+export default function Component() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const router = useRouter()
 
-export default function IndexPage() {
+  const handleGetStarted = () => {
+    router.push('/login')
+  }
+
   return (
-    <>
-      <section className="relative pt-20 md:pt-32 lg:pt-48 pb-16 md:pb-24 lg:pb-32 bg-gradient-to-b from-background to-muted overflow-hidden">
-        <div className="container text-center flex flex-col gap-8 items-center max-w-[64rem] relative z-10">
-          <MotionDiv
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <h1 className="font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
-              Post Writer
-            </h1>
-            <p className="mt-4 text-xl text-muted-foreground max-w-[42rem] mx-auto">
-              次世代のブログプラットフォーム。簡単に始められ、読者との繋がりを深められます。
-            </p>
-          </MotionDiv>
-          <MotionDiv
-            className="space-x-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <Link href="/register" className={cn(buttonVariants({ size: "lg" }))}>
-              無料で始める
-            </Link>
-            <Link
-              href="#features"
-              className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
-            >
-              機能を見る
-            </Link>
-          </MotionDiv>
-          <MotionDiv
-            className="relative w-full max-w-3xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            <Image
-              src="/images/hero-screenshot.png"
-              alt="Post Writerのスクリーンショット"
-              width={1200}
-              height={675}
-              className="rounded-lg shadow-2xl"
-            />
-          </MotionDiv>
-        </div>
-        <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px]" />
-      </section>
-
-      <section id="features" className="py-20 bg-background">
-        <div className="container">
-          <h2 className="text-4xl font-bold text-center mb-12">主な機能</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            {features.map((feature, index) => (
-              <MotionDiv
-                key={index}
-                className="flex flex-col items-center text-center p-6 bg-muted rounded-lg shadow-lg"
+    <div className="flex flex-col min-h-[100dvh]">
+      {isMenuOpen && (
+        <nav className="md:hidden px-4 py-2 bg-background border-b">
+          <Link className="block py-2" href="#features" onClick={() => setIsMenuOpen(false)}>
+            機能
+          </Link>
+          <Link className="block py-2" href="#testimonials" onClick={() => setIsMenuOpen(false)}>
+            ユーザーの声
+          </Link>
+          <Link className="block py-2" href="#pricing" onClick={() => setIsMenuOpen(false)}>
+            料金
+          </Link>
+          <Link className="block py-2" href="#faq" onClick={() => setIsMenuOpen(false)}>
+            FAQ
+          </Link>
+        </nav>
+      )}
+      <main className="flex-1">
+        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-r from-purple-50 via-white to-pink-50">
+          <div className="container px-4 md:px-6">
+            <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.5 }}
+                className="flex flex-col justify-center space-y-4"
               >
-                <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-4">
-                  {feature.icon}
+                <div className="space-y-2">
+                  <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
+                    BlogCraftで、<br />ブログ作成を芸術に
+                  </h1>
+                  <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400">
+                    BlogCraftで、あなたのアイデアを世界に発信しましょう。直感的な操作で、プロフェッショナルなブログを簡単に作成・管理できます。
+                  </p>
                 </div>
-                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-muted-foreground">{feature.description}</p>
-              </MotionDiv>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-muted">
-        <div className="container">
-          <h2 className="text-4xl font-bold text-center mb-12">使い方</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div>
-              <ol className="space-y-6">
-                {steps.map((step, index) => (
-                  <MotionDiv
-                    key={index}
-                    className="flex items-start"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                  >
-                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground font-bold mr-4">
-                      {index + 1}
-                    </span>
-                    <div>
-                      <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
-                      <p className="text-muted-foreground">{step.description}</p>
-                    </div>
-                  </MotionDiv>
-                ))}
-              </ol>
+                <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                  <Button className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90" onClick={handleGetStarted}>
+                    無料で始める
+                  </Button>
+                  <Button variant="outline" className="inline-flex h-10 items-center justify-center rounded-md px-8 text-sm font-medium shadow transition-colors hover:bg-accent hover:text-accent-foreground">
+                    デモを見る
+                  </Button>
+                </div>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="flex items-center justify-center"
+              >
+                <img
+                  alt="BlogCraft Dashboard"
+                  className="aspect-video overflow-hidden rounded-xl object-cover object-center"
+                  height="310"
+                  src="/images/app-screenshot.png" //もっといい画像を用意する。
+                  width="550"
+                />
+              </motion.div>
             </div>
-            <MotionDiv
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
+          </div>
+        </section>
+        <section className="w-full py-12 md:py-24 lg:py-32" id="features">
+          <div className="container px-4 md:px-6">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
+              className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12"
             >
-              <Image
-                src="/images/demo-screenshot.png"
-                alt="Post Writerのデモ"
-                width={600}
-                height={400}
-                className="rounded-lg shadow-lg"
-              />
-            </MotionDiv>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-background">
-        <div className="container text-center">
-          <h2 className="text-4xl font-bold mb-12">ユーザーの声</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <MotionDiv
-                key={index}
-                className="bg-muted p-6 rounded-lg shadow-lg"
+              主な機能
+            </motion.h2>
+            <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-start">
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="grid gap-1"
               >
-                <p className="mb-4 text-lg italic">{testimonial.content}</p>
-                <div className="flex items-center justify-center">
-                  <Image
-                    src={testimonial.avatar}
-                    alt={testimonial.author}
-                    width={48}
-                    height={48}
-                    className="rounded-full mr-4"
-                  />
-                  <div className="text-left">
-                    <p className="font-semibold">{testimonial.author}</p>
-                    <p className="text-sm text-muted-foreground">{testimonial.title}</p>
-                  </div>
+                <PenSquare className="w-10 h-10 mx-auto text-primary" />
+                <h3 className="text-lg font-bold text-center">簡単な記事作成</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+                  直感的なエディタで、美しい記事を簡単に作成できます。画像やビデオの挿入も簡単です。
+                </p>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="grid gap-1"
+              >
+                <Eye className="w-10 h-10 mx-auto text-primary" />
+                <h3 className="text-lg font-bold text-center">リアルタイムプレビュー</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+                  編集中でも、実際の表示を確認できるリアルタイムプレビュー機能を搭載しています。
+                </p>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="grid gap-1"
+              >
+                <Share2 className="w-10 h-10 mx-auto text-primary" />
+                <h3 className="text-lg font-bold text-center">簡単な共有と連携</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+                  SNSへの共有も簡単。各種プラットフォームとの連携で、より広い読者層にリーチできます。
+                </p>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                className="grid gap-1"
+              >
+                <BarChart3 className="w-10 h-10 mx-auto text-primary" />
+                <h3 className="text-lg font-bold text-center">詳細な分析</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+                  記事のパフォーマンスを詳細に分析。読者の行動を理解し、コンテンツを最適化できます。
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800" id="testimonials">
+          <div className="container px-4 md:px-6">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12"
+            >
+              ユーザーの声
+            </motion.h2>
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="flex flex-col p-6 bg-white shadow-lg rounded-lg dark:bg-gray-850 justify-between"
+              >
+                <p className="text-gray-500 dark:text-gray-400 mb-4">
+                  "BlogSaaSのおかげで、ブログ運営が格段に楽になりました。直感的な操作性と豊富な機能に大満足です！"
+                </p>
+                <div>
+                  <p className="font-semibold">田中 花子</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">フリーランスライター</p>
                 </div>
-              </MotionDiv>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-muted">
-        <div className="container">
-          <h2 className="text-4xl font-bold text-center mb-12">料金プラン</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {pricingPlans.map((plan, index) => (
-              <MotionDiv
-                key={index}
-                className="bg-background p-8 rounded-lg shadow-lg flex flex-col"
+              </motion.div>
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="flex flex-col p-6 bg-white shadow-lg rounded-lg dark:bg-gray-850 justify-between"
               >
-                <h3 className="text-2xl font-bold mb-4">{plan.name}</h3>
-                <p className="text-4xl font-bold mb-6">{plan.price}</p>
-                <ul className="space-y-2 mb-8 flex-grow">
-                  {plan.features.map((feature, fIndex) => (
-                    <li key={fIndex} className="flex items-center">
-                      <svg className="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                      {feature}
+                <p className="text-gray-500 dark:text-gray-400 mb-4">
+                  "分析機能が素晴らしいです。読者の興味を把握し、コンテンツを最適化できるようになりました。"
+                </p>
+                <div>
+                  <p className="font-semibold">佐藤 太郎</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">マーケティングマネージャー</p>
+                </div>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="flex flex-col p-6 bg-white shadow-lg rounded-lg dark:bg-gray-850 justify-between"
+              >
+                <p className="text-gray-500 dark:text-gray-400 mb-4">
+                  "他のプラットフォームとの連携が簡単で、ブログの拡散が容易になりました。おかげで読者が大幅に増えました。"
+                </p>
+                <div>
+                  <p className="font-semibold">鈴木 美咲</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">起業家</p>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+        <section className="w-full py-12 md:py-24 lg:py-32" id="pricing">
+          <div className="container px-4 md:px-6">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12"
+            >
+              料金プラン
+            </motion.h2>
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="flex flex-col p-6 bg-white shadow-lg rounded-lg dark:bg-gray-800 justify-between border border-gray-200 dark:border-gray-700"
+              >
+                <div>
+                  <h3 className="text-2xl font-bold text-center">無料プラン</h3>
+                  <div className="mt-4 text-center text-gray-500 dark:text-gray-400">¥0/月</div>
+                  <ul className="mt-4 space-y-2">
+                    <li className="flex items-center">
+                      <ChevronRight className="text-green-500 mr-2 h-4 w-4" />
+                      <span>5記事/月</span>
                     </li>
-                  ))}
-                </ul>
-                <Link
-                  href={plan.link}
-                  className={cn(buttonVariants({ variant: index === 1 ? "default" : "outline" }))}
-                >
-                  選択する
-                </Link>
-              </MotionDiv>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-background">
-        <div className="container">
-          <h2 className="text-4xl font-bold text-center mb-12">最新の記事</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {latestPosts.map((post, index) => (
-              <MotionDiv
-                key={index}
-                className="bg-muted p-6 rounded-lg shadow-lg"
+                    <li className="flex items-center">
+                      <ChevronRight className="text-green-500 mr-2 h-4 w-4" />
+                      <span>基本的な分析</span>
+                    </li>
+                    <li className="flex items-center">
+                      <ChevronRight className="text-green-500 mr-2 h-4 w-4" />
+                      <span>コミュニティサポート</span>
+                    </li>
+                  </ul>
+                </div>
+                <Button className="mt-6">選択する</Button>
+              </motion.div>
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="flex flex-col p-6 bg-white shadow-lg rounded-lg dark:bg-gray-800 justify-between border border-gray-200 dark:border-gray-700 relative"
               >
-                <h3 className="text-xl font-semibold mb-2">{post.title}</h3>
-                <p className="text-muted-foreground mb-4">{post.excerpt}</p>
-                <Link href={post.slug} className={cn(buttonVariants({ variant: "outline" }))}>
-                  続きを読む
-                </Link>
-              </MotionDiv>
-            ))}
+                <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-bl-lg rounded-tr-lg">
+                  人気
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-center">プロプラン</h3>
+                  <div className="mt-4 text-center text-gray-500 dark:text-gray-400">¥2,000/月</div>
+                  <ul className="mt-4 space-y-2">
+                    <li className="flex items-center">
+                      <ChevronRight className="text-green-500 mr-2 h-4 w-4" />
+                      <span>無制限の記事</span>
+                    </li>
+                    <li className="flex items-center">
+                      <ChevronRight className="text-green-500 mr-2 h-4 w-4" />
+                      <span>高度な分析</span>
+                    </li>
+                    <li className="flex items-center">
+                      <ChevronRight className="text-green-500 mr-2 h-4 w-4" />
+                      <span>カスタムドメイン</span>
+                    </li>
+                    <li className="flex items-center">
+                      <ChevronRight className="text-green-500 mr-2 h-4 w-4" />
+                      <span>優先サポート</span>
+                    </li>
+                  </ul>
+                </div>
+                <Button className="mt-6">選択する</Button>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="flex flex-col p-6 bg-white shadow-lg rounded-lg dark:bg-gray-800 justify-between border border-gray-200 dark:border-gray-700"
+              >
+                <div>
+                  <h3 className="text-2xl font-bold text-center">エンタープライズ</h3>
+                  <div className="mt-4 text-center text-gray-500 dark:text-gray-400">お問い合わせください</div>
+                  <ul className="mt-4 space-y-2">
+                    <li className="flex items-center">
+                      <ChevronRight className="text-green-500 mr-2 h-4 w-4" />
+                      <span>すべてのプロ機能</span>
+                    </li>
+                    <li className="flex items-center">
+                      <ChevronRight className="text-green-500 mr-2 h-4 w-4" />
+                      <span>専任サポート</span>
+                    </li>
+                    <li className="flex items-center">
+                      <ChevronRight className="text-green-500 mr-2 h-4 w-4" />
+                      <span>カスタム開発</span>
+                    </li>
+                    <li className="flex items-center">
+                      <ChevronRight className="text-green-500 mr-2 h-4 w-4" />
+                      <span>SLA保証</span>
+                    </li>
+                  </ul>
+                </div>
+                <Button className="mt-6">お問い合わせ</Button>
+              </motion.div>
+            </div>
           </div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-primary text-primary-foreground">
-        <div className="container text-center">
-          <MotionDiv
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <h2 className="text-4xl font-bold mb-4">今すぐ始めましょう</h2>
-            <p className="mb-8 text-xl max-w-2xl mx-auto">
-              Post Writerで、あなたのブログ体験を次のレベルに引き上げましょう。無料で始められ、簡単に使えます。
-            </p>
-            <Link href="/register" className={cn(buttonVariants({ size: "lg", variant: "secondary" }))}>
-              無料アカウントを作成
-            </Link>
-          </MotionDiv>
-        </div>
-      </section>
-    </>
-  );
+        </section>
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800" id="faq">
+          <div className="container px-4 md:px-6">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12"
+            >
+              よくある質問
+            </motion.h2>
+            <Accordion type="single" collapsible className="w-full max-w-3xl mx-auto">
+              <AccordionItem value="item-1">
+                <AccordionTrigger>BlogSaaSは初心者でも使えますか？</AccordionTrigger>
+                <AccordionContent>
+                  はい、BlogSaaSは初心者にも使いやすいように設計されています。直感的なインターフェースと詳細なガイドにより、ブログ作成の経験がない方でも簡単に始められます。
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-2">
+                <AccordionTrigger>既存のブログを移行できますか？</AccordionTrigger>
+                <AccordionContent>
+                  はい、可能です。BlogSaaSは主要なブログプラットフォームからの移行をサポートしています。詳細な手順ガイドを用意していますので、スムーズに移行できます。
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-3">
+                <AccordionTrigger>カスタムドメインは使用できますか？</AccordionTrigger>
+                <AccordionContent>
+                  プロプラン以上では、カスタムドメインの使用が可能です。お好みのドメインを設定して、ブランディングを強化できます。
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-4">
+                <AccordionTrigger>サポートはありますか？</AccordionTrigger>
+                <AccordionContent>
+                  はい、すべてのプランでサポートを提供しています。無料プランではコミュニティサポート、プロプラン以上では優先サポートが利用可能です。エンタープライズプランでは、専任のサポートチームがつきます。
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+        </section>
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-primary text-primary-foreground">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="space-y-2"
+              >
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">今すぐ始めましょう</h2>
+                <p className="max-w-[900px] text-primary-foreground/80 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  BlogSaaSで、あなたのブログ体験を次のレベルに引き上げましょう。簡単な操作で、プロフェッショナルなブログを作成・管理できます。
+                </p>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="w-full max-w-sm space-y-2"
+              >
+                <form className="flex space-x-2">
+                  <Input
+                    className="max-w-lg flex-1 bg-primary-foreground text-primary"
+                    placeholder="メールアドレスを入力"
+                    type="email"
+                  />
+                  <Button type="submit" variant="secondary">無料で始める</Button>
+                </form>
+                <p className="text-xs text-primary-foreground/60">
+                  登録することで、
+                  <Link className="underline underline-offset-2" href="#">
+                    利用規約
+                  </Link>
+                  に同意したことになります。
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  )
 }
-
-const features = [
-  {
-    icon: <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-8 h-8"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>,
-    title: "簡単な投稿",
-    description: "直感的なインターフェースで、誰でも簡単に記事を投稿できます。",
-  },
-  {
-    icon: <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-8 h-8"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" /></svg>,
-    title: "コメント機能",
-    description: "読者とのインタラクションを促進するコメント機能を搭載しています。",
-  },
-  {
-    icon: <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-8 h-8"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>,
-    title: "高速な読み込み",
-    description: "Next.jsの最適化により、高速な読み込みを実現しています。",
-  },
-];
-
-const steps = [
-  {
-    title: "アカウント作成",
-    description: "簡単な登録プロセスでアカウントを作成します。",
-  },
-  {
-    title: "ブログのセットアップ",
-    description: "ブログの基本設定を行い、テーマをカスタマイズします。",
-  },
-  {
-    title: "記事を書く",
-    description: "直感的なエディターで記事を作成し、公開します。",
-  },
-  {
-    title: "読者と交流",
-    description: "コメント機能を通じて読者とコミュニケーションを取ります。",
-  },
-];
-
-const testimonials = [
-  {
-    content: "Post Writerは私のブログ運営に革命をもたらしました。使いやすさと機能性が素晴らしいです。",
-    author: "田中 太郎",
-    title: "プロブロガー",
-    avatar: "/images/avatar-1.jpg",
-  },
-  {
-    content: "他のプラットフォームを使っていましたが、Post Writerに切り替えて正解でした。管理が簡単で、読者との交流も増えました。",
-    author: "佐藤 花子",
-    title: "ライフスタイルブロガー",
-    avatar: "/images/avatar-2.jpg",
-  },
-  {
-    content: "初心者でも簡単に使えるのが魅力です。サポートも親切で、安心して利用できています。",
-    author: "鈴木 一郎",
-    title: "テックブロガー",
-    avatar: "/images/avatar-3.jpg",
-  },
-];
-
-const pricingPlans = [
-  {
-    name: "無料プラン",
-    price: "¥0/月",
-    features: [
-      "10記事/月まで",
-      "基本的な分析ツール",
-      "コミュニティサポート",
-    ],
-    link: "/register",
-  },
-  {
-    name: "プロプラン",
-    price: "¥1,980/月",
-    features: [
-      "無制限の記事",
-      "高度な分析ツール",
-      "優先サポート",
-      "カスタムドメイン",
-    ],
-    link: "/register?plan=pro",
-  },
-  {
-    name: "ビジネスプラン",
-    price: "¥4,980/月",
-    features: [
-      "すべてのプロプラン機能",
-      "複数ユーザー管理",
-      "API アクセス",
-      "専属サポート",
-    ],
-    link: "/register?plan=business",
-  },
-];
-
-const latestPosts = [
-  {
-    title: "最新のブログ記事",
-    excerpt: "最新のブログ記事の概要",
-    slug: "/latest-post",
-  },
-  {
-    title: "人気のある記事",
-    excerpt: "人気のある記事の概要",
-    slug: "/popular-post",
-  },
-  {
-    title: "新しい機能の紹介",
-    excerpt: "新しい機能の概要",
-    slug: "/new-feature",
-  },
-];
