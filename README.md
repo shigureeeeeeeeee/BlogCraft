@@ -62,26 +62,6 @@ The app will be available at `http://localhost:3000`.
 - `public/`: Static assets
 - `styles/`: Global styles
 
-Main components and pages:
-
-- Main Page:
-```typescript:app/(marketing)/page.tsx
-startLine: 12
-endLine: 235
-```
-
-- Blog Page:
-```typescript:app/(marketing)/blog/page.tsx
-startLine: 12
-endLine: 65
-```
-
-- Post Editor:
-```typescript:components/editor.tsx
-startLine: 24
-endLine: 167
-```
-
 ## Deployment
 
 This app can be easily deployed to Vercel. Simply import your GitHub repository to Vercel and set up environment variables.
